@@ -3,14 +3,14 @@ spring:
     restart:
       aditional-paths: src/main/java
   application:
-    name: proveedor-service
+    name: propiedades-service
   cloud:
     config:
       enabled: true
       uri: http://localhost:8081
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/proveedores?autorReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/propiedadesleche?autorReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: marcelovp
   jpa:
