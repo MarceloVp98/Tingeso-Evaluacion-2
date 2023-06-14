@@ -24,23 +24,19 @@ spring:
             allowed-headers: "*"
             allow-credentials: true
       routes:
-        - id: empleado-service
-          uri: lb://empleado-service
+        - id: acopio-service
+          uri: lb://acopio-service
           predicates:
-            - Path=/empleado/**
-        - id: justificativo-service
-          uri: lb://justificativo-service
+            - Path=/acopios/**
+        - id: propiedades-service
+          uri: lb://propiedades-service
           predicates:
-            - Path=/justificativo/**
-        - id: autorizacion-service
-          uri: lb://autorizacion-service
+            - Path=/propiedades/**
+        - id: proveedor-service
+          uri: lb://proveedor-service
           predicates:
-            - Path=/autorizacion/**
-        - id: marcas-reloj-service
-          uri: lb://marcas-reloj-service
+            - Path=/proveedores/**
+        - id: pago-service
+          uri: lb://pago-service
           predicates:
-            - Path=/marcas-reloj/**
-        - id: oficinaRRHH-service
-          uri: lb://oficinaRRHH-service
-          predicates:
-            - Path=/oficinaRRHH/**
+            - Path=/pagos/**
