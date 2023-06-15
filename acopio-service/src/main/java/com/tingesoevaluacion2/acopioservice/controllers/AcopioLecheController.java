@@ -17,20 +17,32 @@ public class AcopioLecheController {
     @Autowired
     AcopioLecheService acopioLecheService;
 
+    @PostMapping
+    public void subirAcopio(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+        acopioLecheService.guardarArchivoAcopio(file);
+        acopioLecheService.leerCSV(file.getOriginalFilename());
+    }
+
     @GetMapping
-    public ResponseEntity<ArrayList<AcopioLecheEntity>> listasAcopios(){
-        ArrayList<AcopioLecheEntity> acopios= acopioLecheService.obtenerAcopiosLeche();
-        if(acopios.isEmpty()){
+    public ResponseEntity<ArrayList<AcopioLecheEntity>> listasAcopios() {
+        ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerAcopiosLeche();
+        if (acopios.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(acopios);
     }
 
-    @PostMapping("/subirArchivoAcopio")
-    public String subirAcopio(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes){
-        acopioLecheService.guardarArchivoAcopio(file);
-        redirectAttributes.addFlashAttribute("mensaje", "Archivo cargado!");
-        acopioLecheService.leerCSV(file.getOriginalFilename());
-        return "redirect:/subirArchivoAcopio";
+    @GetMapping("{codigo_proveedor}")
+    public ResponseEntity<ArrayList<AcopioLecheEntity>> acopiosProveedor(@PathVariable("codigo_proveedor") String codigo_proveedor) {
+        ArrayList<AcopioLecheEntity> acopios_proveedor = acopioLecheService.obtenerAcopiosProveedor(codigo_proveedor);
+        if (acopios_proveedor.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(acopios_proveedor);
+    }
+
+    @DeleteMapping
+    public void eliminarAcopios() {
+        acopioLecheService.eliminarAcopios();
     }
 }

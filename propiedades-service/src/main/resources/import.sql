@@ -1,0 +1,2 @@
+INSERT INTO propiedades_leche(codigo_proveedor,porcentaje_solidos,porcentaje_grasa) VALUES ("01537", 20, 40);
+INSERT INTO propiedades_leche(codigo_proveedor,porcentaje_solidos,porcentaje_grasa) VALUES ("01001", 15, 25);

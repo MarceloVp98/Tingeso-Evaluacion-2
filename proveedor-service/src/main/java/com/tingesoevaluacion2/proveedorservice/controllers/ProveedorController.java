@@ -3,40 +3,38 @@ package com.tingesoevaluacion2.proveedorservice.controllers;
 import com.tingesoevaluacion2.proveedorservice.entities.ProveedorEntity;
 import com.tingesoevaluacion2.proveedorservice.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-@Controller
-@RequestMapping
+@RestController
+@RequestMapping("/proveedores")
 public class ProveedorController {
 
     @Autowired
     ProveedorService proveedorService;
 
-    @GetMapping("/listar-proveedores")
-    public String listar(Model model) {
+    @GetMapping
+    public ResponseEntity<ArrayList<ProveedorEntity>> listarProveedores() {
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
-        model.addAttribute("proveedores", proveedores);
-        return "informacionProveedores";
+        if (proveedores.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(proveedores);
     }
 
-    @GetMapping("/nuevo-proveedor")
-    public String proveedor(){
-        return "nuevoProveedor";
+    @GetMapping("/{codigo}")
+    public ResponseEntity<ProveedorEntity> obtenerPorCodigo(@PathVariable("codigo") String codigo){
+        ProveedorEntity proveedor = proveedorService.obtenerPorCodigo(codigo);
+        if(proveedor == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(proveedor);
     }
 
-    @PostMapping("/nuevo-proveedor")
-    public String nuevoProveedor(@RequestParam("codigo") String codigo,
-                                 @RequestParam("nombre") String nombre,
-                                 @RequestParam("categoria") String categoria,
-                                 @RequestParam("retencion") String retencion) {
-        proveedorService.guardarProveedor(codigo, nombre, categoria, retencion);
-        return "redirect:/nuevo-proveedor";
+    @PostMapping
+    public void nuevoProveedor(@RequestBody ProveedorEntity proveedor) {
+        proveedorService.guardarProveedor(proveedor);
     }
 }

@@ -3,39 +3,46 @@ package com.tingesoevaluacion2.propiedadesservice.controllers;
 import com.tingesoevaluacion2.propiedadesservice.entities.PropiedadesLecheEntity;
 import com.tingesoevaluacion2.propiedadesservice.services.PropiedadesLecheService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 
-@Controller
+@RestController
+@RequestMapping("/propiedades")
 public class PropiedadesLecheController {
 
     @Autowired
     PropiedadesLecheService propiedadesLecheService;
 
-    @GetMapping("/subirArchivoPropiedades")
-    public String subirArchivoPropiedades(){
-        return "subirArchivoPropiedades";
-    }
-
-    @PostMapping("/subirArchivoPropiedades")
-    public String subirPropiedades(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes){
+    @PostMapping
+    public void subirPropiedades(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         propiedadesLecheService.guardarArchivoPropiedades(file);
-        redirectAttributes.addFlashAttribute("mensaje", "Archivo cargado!");
         propiedadesLecheService.leerCSVPropiedades(file.getOriginalFilename());
-        return "redirect:/subirArchivoPropiedades";
     }
 
-    @GetMapping("/informacionPropiedades")
-    public String listarPropiedades(Model model){
-        ArrayList<PropiedadesLecheEntity> propiedades=propiedadesLecheService.obtenerPropiedadesLeche();
-        model.addAttribute("propiedades", propiedades);
-        return "informacionPropiedades";
+    @GetMapping
+    public ResponseEntity<ArrayList<PropiedadesLecheEntity>> listarPropiedades() {
+        ArrayList<PropiedadesLecheEntity> propiedades = propiedadesLecheService.obtenerPropiedadesLeche();
+        if (propiedades.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(propiedades);
+    }
+
+    @GetMapping("/{codigo_proveedor}")
+    public ResponseEntity<PropiedadesLecheEntity> propiedadesProveedor(@PathVariable("codigo_proveedor") String codigo_proveedor) {
+        PropiedadesLecheEntity propiedades_proveedor = propiedadesLecheService.obtenerPropiedadesProveedor(codigo_proveedor);
+        if (propiedades_proveedor == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(propiedades_proveedor);
+    }
+
+    @DeleteMapping
+    public void eliminarPropiedades() {
+        propiedadesLecheService.eliminarPropiedades();
     }
 }

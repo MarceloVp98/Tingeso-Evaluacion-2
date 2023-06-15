@@ -1,14 +1,22 @@
 package com.tingesoevaluacion2.pagoservice.services;
 
 import com.tingesoevaluacion2.pagoservice.entities.PagoEntity;
+import com.tingesoevaluacion2.pagoservice.models.AcopioLecheModel;
+import com.tingesoevaluacion2.pagoservice.models.PropiedadesLecheModel;
+import com.tingesoevaluacion2.pagoservice.models.ProveedorModel;
 import com.tingesoevaluacion2.pagoservice.repositories.PagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,29 +28,31 @@ public class PagoService {
     PagoRepository pagoRepository;
 
     @Autowired
-    ProveedorService proveedorService;
-
-    @Autowired
-    AcopioLecheService acopioLecheService;
-
-    @Autowired
-    PropiedadesLecheService propiedadesLecheService;
+    RestTemplate restTemplate;
 
     public PagoEntity guardarPago(PagoEntity pago) {
         return pagoRepository.save(pago);
     }
 
     public void guardarPagos() {
-        ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
+        //List<ProveedorModel> proveedores = restTemplate.getForObject("http://proveedor-service/proveedores/", List.class);
+        ResponseEntity<List<ProveedorModel>> response = restTemplate.exchange(
+                "http://proveedor-service/proveedores/",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<ProveedorModel>>() {}
+        );
+
+        List<ProveedorModel> proveedores = response.getBody();
         PagoEntity pago;
-        for (ProveedorEntity proveedore : proveedores) {
-            pago = crearPago(proveedore.getCodigo());
+        for (int i = 0; i < proveedores.size(); ++i) {
+            pago = crearPago(proveedores.get(i).getCodigo());
             if (pago != null) {
                 guardarPago(pago);
             }
         }
-        acopioLecheService.eliminarAcopios();
-        propiedadesLecheService.eliminarPropiedades();
+        restTemplate.delete("http://acopio-service/acopios/");
+        restTemplate.delete("http://propiedades-service/propiedades/");
     }
 
     public ArrayList<PagoEntity> obtenerPagos() {
@@ -57,13 +67,19 @@ public class PagoService {
 
         PagoEntity nuevo_pago = new PagoEntity();
 
-        ProveedorEntity proveedor_actual = proveedorService.obtenerPorCodigo(codigo_proveedor);
+        ProveedorModel proveedor_actual = restTemplate.getForObject("http://proveedor-service/proveedores/" + codigo_proveedor, ProveedorModel.class);
 
         //Se obtienen los acopios de la quincena del proveedor.
-        ArrayList<AcopioLecheEntity> acopios;
-        acopios = acopioLecheService.obtenerAcopiosProveedor(codigo_proveedor);
+        ParameterizedTypeReference<List<AcopioLecheModel>> responseType = new ParameterizedTypeReference<List<AcopioLecheModel>>() {};
+        ResponseEntity<List<AcopioLecheModel>> response = restTemplate.exchange(
+                "http://acopio-service/acopios/" + codigo_proveedor,
+                HttpMethod.GET,
+                null,
+                responseType
+        );
+        List<AcopioLecheModel> acopios = response.getBody();
 
-        if (acopios.isEmpty()) {
+        if (acopios == null) {
             return null;
         }
 
@@ -72,8 +88,7 @@ public class PagoService {
         nuevo_pago.setNombre_proveedor(proveedor_actual.getNombre());
 
         //Se obtienen las propiedades de la leche de la quincena del proveedor.
-        PropiedadesLecheEntity propiedades_proveedor;
-        propiedades_proveedor = propiedadesLecheService.obtenerPropiedadesProveedor(codigo_proveedor);
+        PropiedadesLecheModel propiedades_proveedor = restTemplate.getForObject("http://propiedades-service/propiedades/" + codigo_proveedor, PropiedadesLecheModel.class);
 
         //Se crea un arreglo de fechas de tipo LocalDate y se transforman las de acopios.
         ArrayList<LocalDate> fechas = transformarfechas(acopios);
@@ -151,9 +166,9 @@ public class PagoService {
     }
 
     //Descripcion metodo: Metodo que obtiene el total de kls de leche de la quincena de un proveedor
-    public int totalKlsLeche(ArrayList<AcopioLecheEntity> acopios_proveedor) {
+    public int totalKlsLeche(List<AcopioLecheModel> acopios_proveedor) {
         int totalKls = 0;
-        for (AcopioLecheEntity acopioLecheEntity : acopios_proveedor) {
+        for (AcopioLecheModel acopioLecheEntity : acopios_proveedor) {
             totalKls = totalKls + acopioLecheEntity.getKilos_leche();
         }
         return totalKls;
@@ -190,11 +205,11 @@ public class PagoService {
     }
 
     //Descripcion metodo: Metodo que transforma cada fecha String de los acopios a tipo LocalDate.
-    public ArrayList<LocalDate> transformarfechas(ArrayList<AcopioLecheEntity> acopios_proveedor) {
+    public ArrayList<LocalDate> transformarfechas(List<AcopioLecheModel> acopios_proveedor) {
         ArrayList<LocalDate> fechas = new ArrayList<>();
         // Crear un objeto DateTimeFormatter para analizar la cadena de fecha
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        for (AcopioLecheEntity acopioLecheEntity : acopios_proveedor) {
+        for (AcopioLecheModel acopioLecheEntity : acopios_proveedor) {
             fechas.add(LocalDate.parse(acopioLecheEntity.getFecha(), formato));
         }
         return fechas;
@@ -363,7 +378,7 @@ public class PagoService {
         return total;
     }
 
-    public ArrayList<String> obtenerTurnosQuincena(ArrayList<AcopioLecheEntity> acopios, ArrayList<LocalDate> fechas, LocalDate quincena) {
+    public ArrayList<String> obtenerTurnosQuincena(List<AcopioLecheModel> acopios, ArrayList<LocalDate> fechas, LocalDate quincena) {
         ArrayList<String> turnos = new ArrayList<>();
         int inicio_mes;
         int final_quincena;
@@ -378,7 +393,7 @@ public class PagoService {
         }
         for (int i = inicio_mes; i <= final_quincena; ++i) {
             int dia = i;
-            List<AcopioLecheEntity> acopiosFiltrados = IntStream.range(0, fechas.size())
+            List<AcopioLecheModel> acopiosFiltrados = IntStream.range(0, fechas.size())
                     .filter(j -> fechas.get(j).getDayOfMonth() == dia)
                     .mapToObj(acopios::get)
                     .collect(Collectors.toList());
