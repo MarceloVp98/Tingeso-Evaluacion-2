@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import AcopiosService from "../services/AcopiosService";
 
-class ListaAcopiosComponent extends Component {
+class ListarAcopiosComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -28,7 +28,7 @@ class ListaAcopiosComponent extends Component {
               <tr>
                 <th> Fecha</th>
                 <th> Turno</th>
-                <th> Codigo Proveedor</th>
+                <th> Código Proveedor</th>
                 <th> Kilos de leche</th>
               </tr>
             </thead>
@@ -49,4 +49,4 @@ class ListaAcopiosComponent extends Component {
   }
 }
 
-export default ListaAcopiosComponent;
+export default ListarAcopiosComponent;

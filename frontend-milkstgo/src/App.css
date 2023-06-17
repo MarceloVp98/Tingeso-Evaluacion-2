@@ -24,10 +24,19 @@
   color: white;
 }
 
+.navbar{
+  display: flex;
+  justify-content: center;
+}
+
 .tabla-acopios{
   max-width: 1200px;
   margin: 0 auto;
+}
 
+.tabla-pagos{
+  max-width: 1000px;
+  margin: 0px auto;
 }
 
 .App-link {

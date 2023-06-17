@@ -4,9 +4,9 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import swal from "sweetalert";
-import AcopiosService from "../services/AcopiosService";
+import PropiedadesService from "../services/PropiedadesService";
 
-class SubirAcopioComponent extends Component {
+class SubirPropiedadesComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,7 @@ class SubirAcopioComponent extends Component {
         });
         const formData = new FormData();
         formData.append("file", this.state.file);
-        AcopiosService.subirAcopios(formData).then((res) => {});
+        PropiedadesService.subirPropiedades(formData).then((res) => {});
       } else {
         swal({ text: "Archivo no cargado.", icon: "error" });
       }
@@ -77,4 +77,4 @@ class SubirAcopioComponent extends Component {
   }
 }
 
-export default SubirAcopioComponent;
+export default SubirPropiedadesComponent;
