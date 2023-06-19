@@ -27,16 +27,16 @@ class ListarPropiedadesComponent extends Component {
             <thead>
               <tr>
                 <th> Código Proveedor</th>
-                <th> Porcentaje Sólidos</th>
                 <th> Porcentaje Grasas</th>
+                <th> Porcentaje Sólidos</th>
               </tr>
             </thead>
             <tbody>
               {this.state.propiedades.map((propiedades) => (
                 <tr key={propiedades.id}>
-                  <td> {propiedades.codigo_proveedor}</td>                    
+                  <td> {propiedades.codigo_proveedor}</td>   
+                  <td> {propiedades.porcentaje_grasa}</td>                 
                   <td> {propiedades.porcentaje_solidos} </td>
-                  <td> {propiedades.porcentaje_grasas}</td>
                 </tr>
               ))}
             </tbody>

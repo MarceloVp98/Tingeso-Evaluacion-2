@@ -27,7 +27,7 @@ public class PropiedadesLecheController {
     public ResponseEntity<ArrayList<PropiedadesLecheEntity>> listarPropiedades() {
         ArrayList<PropiedadesLecheEntity> propiedades = propiedadesLecheService.obtenerPropiedadesLeche();
         if (propiedades.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ArrayList<>());
         }
         return ResponseEntity.ok(propiedades);
     }

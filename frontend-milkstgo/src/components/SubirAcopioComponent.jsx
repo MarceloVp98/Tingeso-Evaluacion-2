@@ -44,34 +44,34 @@ class SubirAcopioComponent extends Component {
   render() {
     return (
       <div className="home">
-          <div class="f">
-            <div class="container">
-              <h1>
-                <b>Cargar el archivo de datos</b>
-              </h1>
-              <Row className="mt-4">
-                <Col col="12">
-                  <Form.Group className="mb-3" controlId="formFileLg">
-                    <Form.Control
-                      type="file"
-                      size="lg"
-                      onChange={this.onFileChange}
-                    />
-                  </Form.Group>
-                  <Button varian="primary" onClick={this.onFileUpload}>
-                    Cargar el archivo a la Base de Datos
-                  </Button>
-                </Col>
-              </Row>
-            </div>
+        <div className="f">
+          <div class="container">
+            <h1>
+              <b>Cargar el archivo de Acopios</b>
+            </h1>
+            <Row className="mt-4">
+              <Col col="12">
+                <Form.Group className="mb-3" controlId="formFileLg">
+                  <Form.Control
+                    type="file"
+                    size="lg"
+                    onChange={this.onFileChange}
+                  />
+                </Form.Group>
+                <Button varian="primary" onClick={this.onFileUpload}>
+                  Cargar el archivo a la Base de Datos
+                </Button>
+              </Col>
+            </Row>
           </div>
-          <br></br>
-          <hr></hr>
-          <div class="form1">
-            <h5>
-              <b>Recuerde que la extensión del archivo debe ser csv!</b>
-            </h5>
-          </div>
+        </div>
+        <br></br>
+        <hr></hr>
+        <div class="form1">
+          <h5>
+            <b>Recuerde que la extensión del archivo debe ser csv!</b>
+          </h5>
+        </div>
       </div>
     );
   }

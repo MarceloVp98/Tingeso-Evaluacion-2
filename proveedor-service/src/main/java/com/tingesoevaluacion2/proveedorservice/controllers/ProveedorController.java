@@ -19,7 +19,7 @@ public class ProveedorController {
     public ResponseEntity<ArrayList<ProveedorEntity>> listarProveedores() {
         ArrayList<ProveedorEntity> proveedores = proveedorService.obtenerProveedores();
         if (proveedores.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ArrayList<>());
         }
         return ResponseEntity.ok(proveedores);
     }

@@ -27,7 +27,7 @@ public class AcopioLecheController {
     public ResponseEntity<ArrayList<AcopioLecheEntity>> listasAcopios() {
         ArrayList<AcopioLecheEntity> acopios = acopioLecheService.obtenerAcopiosLeche();
         if (acopios.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ArrayList<>());
         }
         return ResponseEntity.ok(acopios);
     }

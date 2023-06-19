@@ -22,7 +22,7 @@ public class PagoController {
         pagoService.guardarPagos();
         ArrayList<PagoEntity> pagos=pagoService.obtenerPagos();
         if(pagos.isEmpty()){
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ArrayList<>());
         }
         return ResponseEntity.ok(pagos);
     }

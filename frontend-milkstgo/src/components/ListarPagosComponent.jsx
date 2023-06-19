@@ -52,7 +52,7 @@ class ListarPagosComponent extends Component {
             <tbody>
               {this.state.pagos.map((pagos) => (
                 <tr key={pagos.id}>
-                    <td> {pagos.quincena}</td>
+                  <td> {pagos.quincena}</td>
                   <td> {pagos.codigo_proveedor}</td>
                   <td> {pagos.nombre_proveedor}</td>
                   <td> {pagos.total_klsleche} </td>

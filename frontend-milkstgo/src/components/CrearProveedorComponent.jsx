@@ -63,7 +63,7 @@ class CrearProveedorComponent extends Component {
               <div className="card-body">
                 <form>
                   <div className="form-group">
-                    <label> Código: </label>
+                    <label> Código Proveedor: </label>
                     <input
                       placeholder="Código Proveedor"
                       name="codigo"

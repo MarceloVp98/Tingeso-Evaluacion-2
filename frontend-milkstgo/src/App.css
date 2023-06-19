@@ -29,25 +29,42 @@
   justify-content: center;
 }
 
+/* CrearProveedorComponent */
+
+.text-center{
+  margin: 20px;
+}
+
+.form-group{
+  margin: 20px;
+}
+
+.btn-success{
+  margin: 0 150px;
+}
+
+/* ListarAcopiosComponent */
+
 .tabla-acopios{
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .tabla-pagos{
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0px auto;
+  font-size: 12px;
 }
 
-.App-link {
-  color: #61dafb;
+/* SubirAcopios/PropiedadesComponent */
+
+.home{
+  display: grid;
+  grid-row: 1fr 1fr;
+  margin: 20px 400px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.f{
+  display: flex;
+  justify-content: center;
 }

@@ -47,7 +47,7 @@ class SubirPropiedadesComponent extends Component {
           <div class="f">
             <div class="container">
               <h1>
-                <b>Cargar el archivo de datos</b>
+                <b>Cargar el archivo de Propiedades</b>
               </h1>
               <Row className="mt-4">
                 <Col col="12">
