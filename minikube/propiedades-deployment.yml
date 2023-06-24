@@ -22,3 +22,18 @@ spec:
           env:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service:8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: propiedades-service
+  labels:
+    app: propiedades-service
+spec:
+  selector:
+    app: propiedades-deployment
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8083
+  type: LoadBalancer

@@ -22,3 +22,18 @@ spec:
           env:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service:8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proveedor-service
+  labels:
+    app: proveedor-service
+spec:
+  selector:
+    app: proveedor-deployment
+  ports:
+    - protocol: TCP
+      port: 8084
+      targetPort: 8084
+  type: LoadBalancer

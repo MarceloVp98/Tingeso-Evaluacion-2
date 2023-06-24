@@ -19,17 +19,26 @@ spec:
       - image: mysql:latest
         name: mysql
         env:
-          - name: MYSQL_ROOT_PASSWORD
-            value: marcelovp
-          - name: MYSQL_USER
-            value: root
-          - name: MYSQL_PASSWORD
-            value: marcelovp
-          - name: MYSQL_DATABASE
-            valueFrom:
-              configMapKeyRef:
-                name: mysql-db
-                key: name
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-credentials
+              key: password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user-credentials
+              key: password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-db
+              key: name
         ports:
         - containerPort: 3306
           name: mysql
