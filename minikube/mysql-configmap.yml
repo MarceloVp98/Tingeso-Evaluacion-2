@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-db
+data:
+  database1-host: mysql
+  database1-name: acopios
+  database2-host: mysql2
+  database2-name: propiedades
+  database3-host: mysql3
+  database3-name: proveedores
+  database4-host: mysql4
+  database4-name: pagos

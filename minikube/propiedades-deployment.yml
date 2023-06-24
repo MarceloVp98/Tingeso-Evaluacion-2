@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: propiedades-deployment
+  labels:
+    app: propiedades-deployment
+spec:
+  selector:
+    matchLabels:
+      app: propiedades-deployment
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: propiedades-deployment
+    spec:
+      containers:
+        - name: propiedades
+          image: marcelovargaspavez/propiedades
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service:8081

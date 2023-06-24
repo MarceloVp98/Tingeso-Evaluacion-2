@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-deployment
+  labels:
+    app: eureka-deployment
+spec:
+  selector:
+    matchLabels:
+      app: eureka-deployment
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: eureka-deployment
+    spec:
+      containers:
+        - name: eureka
+          image: marcelovargaspavez/eureka
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service:8081
