@@ -11,9 +11,14 @@ class ListarProveedoresComponent extends Component {
   }
 
   componentDidMount() {
-    ProveedoresService.getProveedores().then((res) => {
-      this.setState({ proveedores: res.data });
-    });
+    ProveedoresService.getProveedores()
+      .then((res) => {
+        this.setState({ proveedores: res.data });
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud de proveedores:", error);
+        this.setState({ proveedores: [] });
+      });
   }
 
   render() {
@@ -33,7 +38,7 @@ class ListarProveedoresComponent extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.proveedores.map((proveedor) => (
+              {this.state.proveedores.length !== 0 && this.state.proveedores.map((proveedor) => (
                 <tr>
                   <td> {proveedor.codigo} </td>
                   <td> {proveedor.nombre}</td>
