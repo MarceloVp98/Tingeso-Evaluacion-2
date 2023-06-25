@@ -11,15 +11,14 @@ class ListarPagosComponent extends Component {
   }
 
   componentDidMount() {
-    try{
-      PagosService.getPagos().then((res) => {
+    PagosService.getPagos()
+      .then((res) => {
         this.setState({ pagos: res.data });
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud de pagos:", error);
+        this.setState({ pagos: [] });
       });
-    }
-    catch{
-      console.log("Error de solicitud");
-      this.setState({ pagos: [] });
-    }
   }
 
   render() {
@@ -56,7 +55,7 @@ class ListarPagosComponent extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.pagos.length != 0 && this.state.pagos.map((pagos) => (
+              {this.state.pagos.length !== 0 && this.state.pagos.map((pagos) => (
                 <tr key={pagos.id}>
                   <td> {pagos.quincena}</td>
                   <td> {pagos.codigo_proveedor}</td>

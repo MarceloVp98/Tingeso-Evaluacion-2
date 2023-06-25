@@ -11,15 +11,14 @@ class ListarAcopiosComponent extends Component {
   }
 
   componentDidMount() {
-    try{
-      AcopiosService.getAcopios().then((res) => {
+    AcopiosService.getAcopios()
+      .then((res) => {
         this.setState({ acopios: res.data });
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud de acopios:", error);
+        this.setState({ acopios: [] });
       });
-    }
-    catch{
-      console.log("Error de solicitud");
-      this.setState({ acopios: [] });
-    }
   }
 
   render() {
@@ -39,7 +38,7 @@ class ListarAcopiosComponent extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.acopios.length != 0 && this.state.acopios.map((acopio) => (
+              {this.state.acopios.length !== 0 && this.state.acopios.map((acopio) => (
                 <tr key={acopio.id}>
                   <td> {acopio.fecha} </td>
                   <td> {acopio.turno}</td>

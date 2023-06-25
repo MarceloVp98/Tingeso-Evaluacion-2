@@ -11,15 +11,14 @@ class ListarPropiedadesComponent extends Component {
   }
 
   componentDidMount() {
-    try{
-      PropiedadesService.getPropiedades().then((res) => {
+    PropiedadesService.getPropiedades()
+      .then((res) => {
         this.setState({ propiedades: res.data });
+      })
+      .catch((error) => {
+        console.error("Error en la solicitud de propiedades:", error);
+        this.setState({ propiedades: [] });
       });
-    }
-    catch{
-      console.log("Error de solicitud");
-      this.setState({ propiedades: [] });
-    }
   }
 
   render() {
@@ -38,13 +37,14 @@ class ListarPropiedadesComponent extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.propiedades.length != 0 && this.state.propiedades.map((propiedades) => (
-                <tr key={propiedades.id}>
-                  <td> {propiedades.codigo_proveedor}</td>   
-                  <td> {propiedades.porcentaje_grasa}</td>                 
-                  <td> {propiedades.porcentaje_solidos} </td>
-                </tr>
-              ))}
+              {this.state.propiedades.length !== 0 &&
+                this.state.propiedades.map((propiedades) => (
+                  <tr key={propiedades.id}>
+                    <td> {propiedades.codigo_proveedor}</td>
+                    <td> {propiedades.porcentaje_grasa}</td>
+                    <td> {propiedades.porcentaje_solidos} </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
