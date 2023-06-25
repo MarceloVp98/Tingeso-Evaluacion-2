@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: propiedades
+  name: propiedades-leche
 data:
   host: mysql
   name: propiedades

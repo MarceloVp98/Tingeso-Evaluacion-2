@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql-db
+  name: pago
 data:
   host: mysql
-  name: acopios
+  name: pagos

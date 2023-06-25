@@ -34,10 +34,25 @@ spec:
             secretKeyRef:
               name: mysql-user-credentials
               key: password
-        - name: MYSQL_DATABASE
+        - name: MYSQL_DATABASE_PROVEEDOR
           valueFrom:
             configMapKeyRef:
-              name: mysql-db
+              name: proveedor
+              key: name
+        - name: MYSQL_DATABASE_ACOPIO
+          valueFrom:
+            configMapKeyRef:
+              name: acopios-leche
+              key: name
+        - name: MYSQL_DATABASE_PROPIEDADES
+          valueFrom:
+            configMapKeyRef:
+              name: propiedades-leche
+              key: name
+        - name: MYSQL_DATABASE_PAGO
+          valueFrom:
+            configMapKeyRef:
+              name: pago
               key: name
         ports:
         - containerPort: 3306

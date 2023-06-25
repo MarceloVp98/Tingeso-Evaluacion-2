@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql-db
+  name: acopios-leche
 data:
   host: mysql
   name: acopios
