@@ -16,12 +16,32 @@ spec:
     spec:
       containers:
         - name: propiedades
-          image: marcelovargaspavez/propiedades
+          image: marcelovargaspavez/propiedades:latest
           ports:
             - containerPort: 8081
           env:
             - name: SPRING_CLOUD_CONFIG_URI
               value: http://config-service:8081
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: propiedades
+                  key: host
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: propiedades
+                  key: name
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-user-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-user-credentials
+                  key: password
 ---
 apiVersion: v1
 kind: Service
