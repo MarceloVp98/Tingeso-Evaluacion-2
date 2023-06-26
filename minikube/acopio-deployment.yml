@@ -24,6 +24,8 @@ spec:
               value: http://config-service:8081
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: http://eureka-service:8761/eureka/
+            - name: eureka.instance.preferIpAddress
+              value: "true"
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
