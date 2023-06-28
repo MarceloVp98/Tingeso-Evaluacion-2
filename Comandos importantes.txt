@@ -1,0 +1,33 @@
+Lista de comandos
+
+minikube start -> para iniciar minikube
+
+minikube start --driver=virtualbox -> para iniciar minikube con virtualbox
+
+minikube status -> para obtener el estado actual de minikube
+
+minikube version -> para obtener la version actual de minikube
+
+minikube ip -> para obtener la ip de minikube
+
+kubectl get pods -> para obtener los pods 
+
+kubectl get deployment -> para obtener los deployment
+
+kubectl get service -> para obtener los service
+
+kubectl get namespaces -> para obtener los namespaces
+
+kubectl apply -f <archivo-deployment>
+
+kubectl apply -f <archivo-service>
+
+minikube dashboard
+
+acceder a mysql: 
+1- kubectl exec -it NOMBRE_DEL_POD -- /bin/bash
+2- mysql -u root -p
+
+mvn clean package -DskipTests
+
+minikube start --driver=docker --cpus=5 --memory=5700m

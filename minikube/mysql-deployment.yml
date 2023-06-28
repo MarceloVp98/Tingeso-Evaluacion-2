@@ -24,16 +24,6 @@ spec:
             secretKeyRef:
               name: mysql-root-credentials
               key: password
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: mysql-user-credentials
-              key: username
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-user-credentials
-              key: password
         - name: MYSQL_DATABASE_PROVEEDOR
           valueFrom:
             configMapKeyRef:
